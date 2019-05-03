@@ -1,5 +1,20 @@
 // window.addEventListener('resize', resizeCanvas, false);
 
+let ordems = {
+    "order": arrayOrdenado,
+    "invert": arrayInvertido,
+    "random": arrayRandomico
+}
+
+let algList = {
+    "select": selectionSort,
+    "insert": insertionSort,
+    "bubble": bubbleSort,
+    "quick": quickSort,
+    "merge": mergeSort,
+    "shell": shellSort
+
+}
 
 var myCanvas = document.getElementById("myCanvas");
 myCanvas.width = myCanvas.parentElement.clientWidth;
@@ -24,8 +39,8 @@ function drawBar(ctx, upperLeftCornerX, upperLeftCornerY, width, height,color){
     ctx.restore();
 }
 
-var myVinyls = [10,8,7,14,13,12];
-/* var myVinyls = {
+var array = arrayRandomico(20);
+/* var array = {
     "1": 10,
     "2": 14,
     "3": 2,
@@ -107,22 +122,90 @@ var myBarchart = new Barchart(
         padding:10,
         gridScale:5,
         gridColor:"#ffffff",
-        data:myVinyls,
+        data:array,
         colors:["#a55ca5","#67b6c7", "#bccd7a","#eb9743"]
     }
 );
 myBarchart.draw();
 
-function addBar(){
+
+function clearCanvas(ctx){
     ctx.clearRect(0, 0, myCanvas.width, myCanvas.height);
-    myVinyls.push(Math.random()*10);
+}
+
+function novoArray(){
+    //showModal();
+    clearCanvas(ctx);
+    let newArrayFn = ordems[document.getElementById('ordemSelect').value];
+    array = newArrayFn(document.getElementById('tamArray').value);
+    myBarchart.options.data = array;
+    myBarchart.draw()
+    //hideModal();
+    
+}
+
+function ordenar(){
+    let algFn = algList[document.getElementById('algSelect').value];
+    start = Date.now();
+    let result = algFn(myBarchart.options.data);
+    updateCharArray(result);
+    let tempo = Date.now()-start;
+    let milisegundos = document.createTextNode("Tempo em milisegundos: "+ tempo.toString());
+    document.getElementById('myH1').innerHTML = "";
+    document.getElementById('myH1').appendChild(milisegundos);
+}
+
+function updateCharArray(data){
+    myBarchart.options.data = data;
+    clearCanvas(ctx);
     myBarchart.draw();
 }
 
 function arrayOrdenado(tam){
     let array = [];
-    for(let i = 0; i < tam ; i++){
-        
+    for(let i = 1; i <= tam ; i++){
+        array.push(i);
     }
     return array;
 }
+function arrayInvertido(tam){
+    let array = [];
+    for(let i = tam; i > 0 ; i--){
+        array.push(i);
+    }
+    return array;
+}
+
+function arrayRandomico(tam){
+    let array = [];
+    let newValue = 0;
+    for(var i = 0; i < tam; i++){
+        newValue = Math.floor(1+Math.random()*tam);
+        if(array.indexOf(newValue) < 0){
+            array.push(newValue);
+        }else{
+            i--;
+        }
+    }
+    return array;
+}
+
+function showModal(){
+    //$("#myModal").modal({backdrop: "static", keyboard: false});
+    document.getElementById("spinner").style.visibility = "visible";
+}
+
+function hideModal(){
+    //$("#myModal").modal('hide');
+    document.getElementById("spinner").style.visibility = "hidden";
+}
+
+document.getElementById("mySubmit").addEventListener("submit", function(event){
+    event.preventDefault();
+    ordenar();
+  });
+
+document.getElementById("orderSubmit").addEventListener("submit", function(event){
+    event.preventDefault();
+    novoArray();
+  });

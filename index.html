@@ -2,6 +2,15 @@
 <html lang="en">
 
 <head>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"
+        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"
+        integrity="sha384-xrRywqdh3PHs8keKZN+8zzc5TX0GRTLCcmivcbNJWm2rs5C8PRhcEn3czEjhAO9o"
+        crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
+        integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
     <style>
         * {
             margin: 0;
@@ -18,15 +27,24 @@
 
         /* just to be sure these are full screen*/
 
-        #myDiv{
+        #myDiv {
             /* padding: 15px; */
             border: 2px solid black;
             margin-left: 10px;
             margin-right: 10px;
+            margin-top: 10px;
         }
 
         canvas {
             display: block;
+        }
+
+        .mt-x {
+            margin-top: 32px;
+        }
+        .modal-body{
+            text-align: center;
+            font-size: 80pt; 
         }
 
         /* To remove the scrollbars */
@@ -37,7 +55,66 @@
     <div id="myDiv">
         <canvas id="myCanvas"></canvas>
     </div>
-    <button onclick="addBar()">TEste</button>
+    <div>
+        <h1 id="myH1">Tempo em milisegundos:  <i id="spinner" style="visibility: hidden" class="fas fa-spinner fa-spin"></i></h1>
+    </div>
+    <form id="orderSubmit">
+        <div class="form-row">
+            <div class="col-sm-6">
+                <div class="form-row">
+                    <div class="col-sm-6">
+                        <label for="ordemSelect">Escolher Ordem</label>
+                        <select class="form-control" id="ordemSelect">
+                            <option value="order">Ordenado</option>
+                            <option value="invert">Invertido</option>
+                            <option value="random" selected>Randomico</option>
+                        </select>
+                    </div>
+                    <div class="col-sm-3">
+                        <label for="tamArray">Tamanho</label>
+                        <input type="number" class="form-control" id="tamArray" value="20" min="10" max="1000000">
+                    </div>
+                    <div class="col-sm-3">
+                        <button type="submit" class="btn btn-secondary mt-x" onclick="novoArray()">Nova Lista</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+    <form id="mySubmit">
+        <div class="row">
+            <div class="col-6">
+                <div class="form-row">
+                    <div class="col-sm-8">
+                        <select class="form-control" id="algSelect" onchange="isMerge()">
+                            <option value="select">Selection Sort</option>
+                            <option value="insert">Insertion Sort</option>
+                            <option value="bubble">Bubble Sort</option>
+                            <option value="quick">Quick Sort</option>
+                            <option value="merge">Merge Sort</option>
+                            <option value="shell">Shell Sort</option>
+                        </select>
+                    </div>
+                    <div class="col-sm-4">
+                        <button type="submit" class="btn btn-primary">Ordenar</button>
+                        <button class="button" onclick="showModal()"></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <div class="modal hide fade" id="myModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <i class="fas fa-spinner fa-spin"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="algorithms.js"></script>
     <script type="text/javascript" src="script.js"></script>
 </body>
 
